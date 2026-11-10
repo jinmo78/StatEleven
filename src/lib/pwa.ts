@@ -11,6 +11,8 @@ interface BeforeInstallPromptEvent extends Event {
 const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
 
 export const isKakaoInApp = () => /KAKAOTALK/i.test(ua);
+/** 삼성 인터넷: 자체 생성 WebAPK가 Play 프로텍트에 차단되는 경우가 있어 별도 안내 */
+export const isSamsungBrowser = () => /SamsungBrowser/i.test(ua);
 export const isIOS = () => /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
 /** iOS에서 Safari가 아닌 브라우저(크롬·네이버 등)는 홈 화면 추가 위치가 다름 */
 export const isIOSSafari = () => isIOS() && !/CriOS|FxiOS|EdgiOS|NAVER|Whale|KAKAOTALK|Line|Instagram|FBAN/i.test(ua);
@@ -21,6 +23,14 @@ export const isStandalone = () =>
 /** 카카오톡 내장 브라우저 → 기본 브라우저(크롬/사파리)로 현재 페이지 열기 */
 export function openInExternalBrowser() {
   window.location.href = `kakaotalk://web/openExternal?url=${encodeURIComponent(window.location.href)}`;
+}
+
+/** 안드로이드에서 현재 페이지를 크롬으로 열기 (크롬이 없으면 같은 주소로 이동) */
+export function openInChrome() {
+  const { host, pathname, search, href } = window.location;
+  window.location.href =
+    `intent://${host}${pathname}${search}#Intent;scheme=https;package=com.android.chrome;` +
+    `S.browser_fallback_url=${encodeURIComponent(href)};end`;
 }
 
 interface InstallState {

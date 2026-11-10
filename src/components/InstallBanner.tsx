@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { ExternalLink, Share, Smartphone, X } from 'lucide-react';
-import { isIOSSafari, isKakaoInApp, isStandalone, openInExternalBrowser, useInstall } from '../lib/pwa';
+import { Chrome, ExternalLink, Share, Smartphone, X } from 'lucide-react';
+import {
+  isIOSSafari, isKakaoInApp, isSamsungBrowser, isStandalone, openInChrome, openInExternalBrowser, useInstall,
+} from '../lib/pwa';
 import { Btn } from './ui';
 
 const DISMISS_KEY = 'stat-eleven-install-dismissed';
@@ -40,7 +42,22 @@ export function InstallBanner() {
     try { localStorage.setItem(DISMISS_KEY, '1'); } catch { /* 무시 */ }
   };
 
-  // 안드로이드 크롬·삼성 인터넷 등: 설치 버튼
+  // 삼성 인터넷: 앱 설치 시 Play 프로텍트 경고가 뜰 수 있어 크롬 설치 또는 바로가기 추가를 안내
+  if (isSamsungBrowser()) {
+    return (
+      <div className="mb-5 flex flex-wrap items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-100">
+        <Smartphone size={18} className="shrink-0 text-emerald-300" />
+        <div className="min-w-0 flex-1">
+          <b>크롬</b>에서 홈 화면에 추가하면 앱처럼 실행할 수 있어요.
+          <div className="mt-0.5 text-xs text-emerald-200/70">삼성 인터넷에서는 메뉴(≡) → <b>페이지 추가</b> → <b>홈 화면</b>으로 바로가기를 만들 수 있어요.</div>
+        </div>
+        <Btn size="sm" onClick={openInChrome}><Chrome size={14} />크롬에서 열기</Btn>
+        <button type="button" onClick={close} className="text-emerald-300/70 hover:text-emerald-200" aria-label="닫기"><X size={16} /></button>
+      </div>
+    );
+  }
+
+  // 안드로이드 크롬 등: 설치 버튼
   if (deferred) {
     return (
       <div className="mb-5 flex flex-wrap items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-100">
