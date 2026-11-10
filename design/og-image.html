@@ -1,0 +1,115 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+    background:
+      radial-gradient(circle at 78% 40%, rgba(16,185,129,.22), transparent 55%),
+      radial-gradient(circle at 10% 100%, rgba(56,189,248,.12), transparent 45%),
+      #020617;
+    color: #e2e8f0; position: relative;
+  }
+  .grid { position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(148,163,184,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,.06) 1px, transparent 1px);
+    background-size: 40px 40px; }
+  .left { position: absolute; left: 64px; top: 46px; width: 560px; }
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .badge { width: 74px; height: 74px; border-radius: 18px; background: rgba(16,185,129,.15);
+    border: 2px solid rgba(52,211,153,.5); color: #34d399; font-weight: 900; font-size: 38px;
+    display: flex; align-items: center; justify-content: center; }
+  .kicker { font-size: 17px; letter-spacing: .32em; color: #34d399; font-weight: 700; }
+  h1 { font-size: 82px; font-weight: 900; letter-spacing: .04em; line-height: 1; margin-top: 24px; color: #f8fafc; }
+  h1 span { color: #34d399; }
+  .sub { margin-top: 18px; font-size: 31px; font-weight: 700; color: #cbd5e1; }
+  .chips { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+  .chip { padding: 9px 16px; border-radius: 10px; font-size: 20px; font-weight: 700;
+    background: #0f172a; border: 1px solid #1e293b; color: #94a3b8; }
+  .chip b { color: #e2e8f0; }
+  .score { margin-top: 26px; display: flex; align-items: center; gap: 18px; width: 520px;
+    padding: 18px 22px; border-radius: 16px; background: rgba(15,23,42,.9); border: 1px solid #1e293b; }
+  .live { font-size: 15px; font-weight: 800; color: #fda4af; background: rgba(244,63,94,.18); padding: 4px 9px; border-radius: 6px; }
+  .team { font-size: 26px; font-weight: 800; }
+  .num { font-size: 42px; font-weight: 900; color: #f8fafc; font-variant-numeric: tabular-nums; }
+  .min { margin-left: auto; color: #34d399; font-weight: 800; font-size: 24px; }
+  .feed { margin-top: 10px; font-size: 19px; color: #fcd34d; padding-left: 4px; }
+
+  .pitch { position: absolute; right: 56px; top: 44px; width: 452px; height: 542px; border-radius: 18px;
+    background: linear-gradient(180deg, #064e3b, #065f46 50%, #064e3b);
+    border: 2px solid rgba(52,211,153,.35); box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 0 8px rgba(16,185,129,.06);
+    overflow: hidden; }
+  .stripe { position: absolute; left: 0; right: 0; height: 12.5%; background: rgba(255,255,255,.035); }
+  .line { position: absolute; border: 2px solid rgba(209,250,229,.28); }
+  .p { position: absolute; transform: translate(-50%,-50%); text-align: center; }
+  .dot { width: 54px; height: 54px; border-radius: 50%; background: #020617; border: 3px solid #34d399;
+    color: #6ee7b7; font-weight: 900; font-size: 21px; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+  .dot.gold { border-color: #fbbf24; color: #fcd34d; }
+  .lbl { margin-top: 4px; font-size: 13px; font-weight: 800; color: #d1fae5; background: rgba(2,6,23,.75); padding: 1px 6px; border-radius: 4px; display: inline-block; }
+  .ball { position: absolute; left: 58%; top: 20%; font-size: 30px; filter: drop-shadow(0 4px 6px rgba(0,0,0,.5)); }
+  .arrow { position: absolute; height: 3px; background: linear-gradient(90deg, rgba(251,191,36,0), #fbbf24); transform-origin: left center; border-radius: 2px; }
+  .stats { position: absolute; left: 22px; right: 22px; bottom: 16px; padding: 10px 16px; border-radius: 12px;
+    background: rgba(2,6,23,.82); border: 1px solid rgba(52,211,153,.25); }
+  .row { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; color: #94a3b8; margin: 3px 0; }
+  .row span:first-child { width: 58px; }
+  .bar { flex: 1; height: 8px; border-radius: 6px; background: #1e293b; overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 6px; background: #34d399; }
+  .row b { width: 34px; text-align: right; color: #e2e8f0; }
+</style></head>
+<body>
+  <div class="grid"></div>
+
+  <div class="left">
+    <div class="brand">
+      <div class="badge">11</div>
+      <div class="kicker">FOOTBALL MANAGER</div>
+    </div>
+    <h1>STAT <span>ELEVEN</span></h1>
+    <div class="sub">데이터로 승부하는 축구 매니지먼트</div>
+    <div class="chips">
+      <div class="chip"><b>선수 스카우트</b> · 육성</div>
+      <div class="chip"><b>전술</b> 설계</div>
+      <div class="chip"><b>90분</b> 텍스트 중계</div>
+    </div>
+    <div class="score">
+      <span class="live">● LIVE</span>
+      <span class="team" style="color:#34d399">SEF</span>
+      <span class="num">2 : 1</span>
+      <span class="team" style="color:#38bdf8">HBC</span>
+      <span class="min">78'</span>
+    </div>
+    <div class="feed">⚽ 골!! 오른발 강슛이 골망을 가릅니다!</div>
+  </div>
+
+  <div class="pitch">
+    <div class="stripe" style="top:0"></div><div class="stripe" style="top:25%"></div>
+    <div class="stripe" style="top:50%"></div><div class="stripe" style="top:75%"></div>
+    <div class="line" style="inset:14px; border-radius:6px"></div>
+    <div class="line" style="left:14px; right:14px; top:50%; height:0; border-width:2px 0 0 0"></div>
+    <div class="line" style="left:50%; top:50%; width:110px; height:110px; border-radius:50%; transform:translate(-50%,-50%)"></div>
+    <div class="line" style="left:50%; top:14px; width:200px; height:78px; transform:translateX(-50%); border-top:0"></div>
+    <div class="line" style="left:50%; bottom:14px; width:200px; height:78px; transform:translateX(-50%); border-bottom:0"></div>
+
+    <div class="arrow" style="left:52%; top:38%; width:82px; transform:rotate(-62deg)"></div>
+
+    <!-- 4-3-3 -->
+    <div class="p" style="left:20%; top:14%"><div class="dot">74</div><div class="lbl">LW</div></div>
+    <div class="p" style="left:50%; top:10%"><div class="dot gold">82</div><div class="lbl">ST</div></div>
+    <div class="p" style="left:80%; top:14%"><div class="dot">76</div><div class="lbl">RW</div></div>
+    <div class="p" style="left:27%; top:32%"><div class="dot">71</div><div class="lbl">CM</div></div>
+    <div class="p" style="left:50%; top:40%"><div class="dot">73</div><div class="lbl">DM</div></div>
+    <div class="p" style="left:73%; top:32%"><div class="dot">78</div><div class="lbl">CM</div></div>
+    <div class="p" style="left:13%; top:51%"><div class="dot">69</div><div class="lbl">LB</div></div>
+    <div class="p" style="left:37%; top:55%"><div class="dot">75</div><div class="lbl">CB</div></div>
+    <div class="p" style="left:63%; top:55%"><div class="dot">72</div><div class="lbl">CB</div></div>
+    <div class="p" style="left:87%; top:51%"><div class="dot">70</div><div class="lbl">RB</div></div>
+    <div class="p" style="left:50%; top:69%"><div class="dot gold" style="border-color:#f59e0b">68</div><div class="lbl">GK</div></div>
+    <div class="ball">⚽</div>
+
+    <div class="stats">
+      <div class="row"><span>점유율</span><div class="bar"><i style="width:58%"></i></div><b>58%</b></div>
+      <div class="row"><span>슈팅</span><div class="bar"><i style="width:68%"></i></div><b>14</b></div>
+      <div class="row"><span>패스</span><div class="bar"><i style="width:84%; background:#38bdf8"></i></div><b>84%</b></div>
+    </div>
+  </div>
+</body></html>
