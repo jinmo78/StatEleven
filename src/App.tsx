@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Coins, Dumbbell, LayoutDashboard, PlayCircle, Radio, Trophy, UserPlus, Users } from 'lucide-react';
 import { Toast, cn } from './components/ui';
+import { CloudConflictModal, CloudMini, CloudPanel } from './components/CloudSync';
+import { initCloud } from './store/cloudStore';
 import { useGame } from './store/gameStore';
 import Dashboard from './pages/Dashboard';
 import SquadTactics from './pages/SquadTactics';
@@ -38,6 +40,7 @@ export default function App() {
   const league = useGame((s) => s.league);
   const live = useGame((s) => s.liveMatch);
   useMatchTicker();
+  useEffect(() => initCloud(), []);
 
   const liveBadge = live && !live.finished;
 
@@ -54,6 +57,7 @@ export default function App() {
             </div>
           </div>
           <div className="flex items-center gap-3 text-xs md:hidden">
+            <CloudMini />
             <span className="tabular flex items-center gap-1 text-amber-300"><Coins size={13} />{gold.toLocaleString()}</span>
             <span className="tabular flex items-center gap-1 text-sky-300"><Dumbbell size={13} />{tp}</span>
           </div>
@@ -82,6 +86,7 @@ export default function App() {
         </nav>
 
         <div className="mt-auto hidden space-y-2 border-t border-slate-800 p-4 md:block">
+          <CloudPanel />
           <div className="flex items-center justify-between rounded-lg bg-slate-900 px-3 py-2">
             <span className="flex items-center gap-1.5 text-xs text-slate-400"><Coins size={14} className="text-amber-400" />골드</span>
             <span className="tabular text-sm font-bold text-amber-300">{gold.toLocaleString()}</span>
@@ -93,7 +98,6 @@ export default function App() {
           <div className="px-1 pt-1 text-[11px] text-slate-500">
             시즌 {league.season} · 라운드 {Math.min(league.round + 1, league.fixtures.length)}/{league.fixtures.length}
           </div>
-          <div className="px-1 text-[10px] text-slate-600">진행 상황은 브라우저에 자동 저장됩니다.</div>
         </div>
       </aside>
 
@@ -107,6 +111,7 @@ export default function App() {
         </div>
       </main>
       <Toast />
+      <CloudConflictModal />
     </div>
   );
 }

@@ -36,7 +36,7 @@ export interface SeasonSummary {
 
 export type ScoutTier = keyof typeof SCOUT_COST;
 
-interface GameData {
+export interface GameData {
   clubName: string;
   clubShort: string;
   gold: number;
@@ -431,13 +431,7 @@ export const useGame = create<GameStore>()(
       name: 'stat-eleven-save',
       version: 1,
       storage: createJSONStorage(() => localStorage),
-      partialize: (s) => {
-        // 액션 함수 제외하고 데이터만 저장
-        const { clubName, clubShort, gold, trainingPoints, squad, formation, tactics, lineup,
-          aiTeams, league, market, history, liveMatch, seasonSummary } = s;
-        return { clubName, clubShort, gold, trainingPoints, squad, formation, tactics, lineup,
-          aiTeams, league, market, history, liveMatch, seasonSummary };
-      },
+      partialize: (s) => extractSaveData(s),
     },
   ),
 );
@@ -449,3 +443,29 @@ export function aiSheet(t: AITeam): TeamSheet {
   };
 }
 
+
+/** 저장 대상 데이터만 추출 (localStorage · 클라우드 공용) */
+export function extractSaveData(s: GameData): GameData {
+  const { clubName, clubShort, gold, trainingPoints, squad, formation, tactics, lineup,
+    aiTeams, league, market, history, liveMatch, seasonSummary } = s;
+  return { clubName, clubShort, gold, trainingPoints, squad, formation, tactics, lineup,
+    aiTeams, league, market, history, liveMatch, seasonSummary };
+}
+
+/** 저장본 요약 (클라우드/로컬 비교 화면용) */
+export function saveSummary(d: GameData) {
+  return {
+    season: d.league.season,
+    round: Math.min(d.league.round, d.league.fixtures.length),
+    totalRounds: d.league.fixtures.length,
+    gold: d.gold,
+    squad: d.squad.length,
+    matches: d.history.length,
+  };
+}
+export type SaveSummary = ReturnType<typeof saveSummary>;
+
+/** 아직 한 경기도 치르지 않은 새 게임인지 */
+export function isFreshGame(d: GameData) {
+  return d.history.length === 0 && d.league.round === 0 && d.league.season === 1;
+}
