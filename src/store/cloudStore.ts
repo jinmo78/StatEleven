@@ -10,6 +10,7 @@
 import type { User } from '@supabase/supabase-js';
 import { create } from 'zustand';
 import { supabase } from '../lib/supabase';
+import { isKakaoInApp, openInExternalBrowser } from '../lib/pwa';
 import {
   extractSaveData, isFreshGame, saveSummary, useGame, type GameData, type SaveSummary,
 } from './gameStore';
@@ -92,6 +93,11 @@ export const useCloud = create<CloudState>((set, get) => ({
 
   signIn: async () => {
     if (!supabase) return;
+    // 구글은 카카오톡 등 인앱 브라우저 로그인을 차단(disallowed_useragent) → 외부 브라우저로 이동
+    if (isKakaoInApp()) {
+      openInExternalBrowser();
+      return;
+    }
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: window.location.origin + import.meta.env.BASE_URL },

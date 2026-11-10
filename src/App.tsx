@@ -3,6 +3,7 @@ import { Coins, Dumbbell, LayoutDashboard, PlayCircle, Radio, Trophy, UserPlus, 
 import { Toast, cn } from './components/ui';
 import { CloudConflictModal, CloudMini, CloudPanel } from './components/CloudSync';
 import { initCloud } from './store/cloudStore';
+import { InstallBanner } from './components/InstallBanner';
 import { useGame } from './store/gameStore';
 import Dashboard from './pages/Dashboard';
 import SquadTactics from './pages/SquadTactics';
@@ -103,6 +104,7 @@ export default function App() {
 
       <main className="min-w-0 flex-1 px-4 py-5 md:px-8 md:py-7">
         <div className="mx-auto max-w-7xl">
+          <InstallBanner />
           {page === 'dashboard' && <Dashboard go={setPage} />}
           {page === 'squad' && <SquadTactics />}
           {page === 'recruit' && <Recruit />}
